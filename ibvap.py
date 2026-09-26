@@ -6,7 +6,7 @@ import random
 from datetime import datetime
 from ultralytics import YOLO
 
-st.set_page_config(page_title="Project PRAHARI | Command Center", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="IBVAP | Command Center", layout="wide", initial_sidebar_state="expanded")
 
 @st.cache_resource
 def load_model():
@@ -24,7 +24,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡️ Project PRAHARI: Intelligent Edge-Fog Analytics")
+st.title("🛡️ IBVAP: Intelligent Video Analytics Platform")
 st.markdown("**Sashastra Seema Bal (SSB) | Border Out Post Command Terminal**")
 
 # --- CONTROLS ---
@@ -51,7 +51,7 @@ with col2:
     st.subheader("Evidence Locker (SHA-256)")
     evidence_log = st.empty()
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4')
 logs = []
 
 while cap.isOpened():
