@@ -5,6 +5,7 @@ import hashlib
 import random
 from datetime import datetime
 from ultralytics import YOLO
+import time
 
 st.set_page_config(page_title="IBVAP | Command Center", layout="wide", initial_sidebar_state="expanded")
 
@@ -66,9 +67,16 @@ if not os.path.exists(video_path):
 cap = cv2.VideoCapture(video_path)
 logs = []
 
+
+
+# --- MAIN VIDEO LOOP ---
 while cap.isOpened():
     ret, frame = cap.read()
-    if not ret: break
+    
+    # Safety catch for video ending or failing to load
+    if not ret or frame is None:
+        st.warning("Video feed ended or connection lost. Refresh page to restart.")
+        break
     
     # 1. Zero-DCE Simulation (Night Vision)
     if enable_nightvision:
@@ -110,12 +118,12 @@ while cap.isOpened():
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
                 
-                # --- USP: FRS Vector Simulation UI ---
+                # FRS Vector Simulation UI
                 if cls == 0 and enable_frs:
                     cv2.putText(frame, "Human Detected -> Extracting FAISS Vector...", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
                     simulated_vector = f"**Live Edge Vector Generated (2 KB payload):** `[0.{random.randint(100,999)}, -0.{random.randint(100,999)}, 0.{random.randint(100,999)} ... 512d]` -> *Sending to HQ...*"
                 
-                # --- USP: ANPR Regex Simulation UI ---
+                # ANPR Regex Simulation UI
                 elif cls in [2,3,5,7]:
                     cv2.putText(frame, "Vehicle -> Regex ANPR Active", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
 
@@ -134,8 +142,11 @@ while cap.isOpened():
                 if not any(crypto_hash[:24] in log for log in logs):
                     logs.insert(0, log_entry)
 
-    # --- RENDER UI ---
+    # --- CLOUD-SAFE UI RENDERING ---
+    # Convert BGR to RGB and enforce uint8 data type so Streamlit doesn't crash
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame_rgb = np.array(frame_rgb, dtype=np.uint8) 
+    
     video_placeholder.image(frame_rgb, channels="RGB", use_column_width=True)
     fps_text.markdown(f"**Network Status:** {current_fps}")
     
@@ -145,7 +156,7 @@ while cap.isOpened():
         vector_display.empty()
     
     if "CRITICAL" in threat_level:
-        threat_status.error(f"🚨 {threat_level}\n\n**Action:** Threat detected in geo-fence. Trajectory engine engaged.")
+        threat_status.error(f"🚨 {threat_level}\n\n**Action:** Threat detected. Trajectory engine engaged.")
     else:
         threat_status.success(f"✅ {threat_level}\n\n**Action:** Area secure.")
         
@@ -153,5 +164,8 @@ while cap.isOpened():
         evidence_log.markdown(f"<div class='threat-box'>{ '<br><br>'.join(logs) }</div>", unsafe_allow_html=True)
     elif not enable_blockchain:
         evidence_log.warning("Blockchain Offline.")
+        
+    # Crucial for Streamlit Cloud: tiny pause to prevent WebSocket overload
+    time.sleep(0.03) 
 
 cap.release()
