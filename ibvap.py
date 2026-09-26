@@ -51,7 +51,7 @@ with col2:
     st.subheader("Evidence Locker (SHA-256)")
     evidence_log = st.empty()
 
-cap = cv2.VideoCapture('https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4')
+cap = cv2.VideoCapture(0)
 logs = []
 
 while cap.isOpened():
