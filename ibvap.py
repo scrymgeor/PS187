@@ -51,7 +51,19 @@ with col2:
     st.subheader("Evidence Locker (SHA-256)")
     evidence_log = st.empty()
 
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
+import os
+import urllib.request
+
+# Automatically download a perfect AI test video if it doesn't exist yet
+video_path = "border_test.mp4"
+if not os.path.exists(video_path):
+    st.info("Downloading test video for the first time... please wait 5 seconds.")
+    # This is a reliable, open-source traffic video from Intel's AI library
+    video_url = "https://github.com/intel-iot-devkit/sample-videos/raw/master/person-bicycle-car-detection.mp4"
+    urllib.request.urlretrieve(video_url, video_path)
+
+cap = cv2.VideoCapture(video_path)
 logs = []
 
 while cap.isOpened():
