@@ -1,5 +1,6 @@
 import streamlit as st
 import cv2
+from PIL import Image
 import numpy as np
 import hashlib
 import random
@@ -144,10 +145,10 @@ while cap.isOpened():
 
     # --- CLOUD-SAFE UI RENDERING ---
     # Convert BGR to RGB and enforce uint8 data type so Streamlit doesn't crash
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    frame_rgb = np.array(frame_rgb, dtype=np.uint8) 
     
-    video_placeholder.image(frame_rgb, channels="RGB", use_column_width=True)
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    pil_image = Image.fromarray(frame_rgb)
+    video_placeholder.image(pil_image, use_column_width=True)
     fps_text.markdown(f"**Network Status:** {current_fps}")
     
     if simulated_vector:
