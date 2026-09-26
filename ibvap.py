@@ -17,17 +17,81 @@ def load_model():
 yolo_model = load_model()
 fgbg = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=50, detectShadows=False)
 
+# --- TACTICAL MILITARY UI CSS ---
 st.markdown("""
     <style>
-    .stApp { background-color: #0F172A; color: white; }
-    h1, h2, h3 { color: #0EA5E9; }
-    .threat-box { padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #334155; font-family: monospace;}
-    .vector-text { color: #10B981; font-family: monospace; font-size: 12px;}
+    /* 1. HIDE STREAMLIT WATERMARKS & MENUS */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* 2. GLOBAL DARK THEME & TACTICAL FONT */
+    .stApp { 
+        background-color: #050A15; /* Pitch black/navy */
+        color: #0EA5E9; /* Cyan text */
+        font-family: 'Courier New', Courier, monospace; /* Terminal font */
+    }
+    
+    /* 3. SHARP, GLOWING BORDERS (No cute rounded corners) */
+    div[data-testid="stSidebar"] {
+        background-color: #020617;
+        border-right: 2px solid #0EA5E9;
+    }
+    
+    /* 4. CUSTOMIZE HEADERS */
+    h1, h2, h3 { 
+        color: #FFFFFF !important; 
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-bottom: 1px solid #334155;
+        padding-bottom: 10px;
+    }
+    
+    /* 5. MILITARY THREAT BOXES */
+    .threat-box { 
+        background-color: rgba(15, 23, 42, 0.8);
+        padding: 15px; 
+        border-left: 4px solid #10B981; /* Green safe line */
+        margin-bottom: 15px; 
+        font-family: 'Courier New', Courier, monospace;
+        color: #E2E8F0;
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    }
+    .threat-box-critical {
+        background-color: rgba(69, 10, 10, 0.8);
+        padding: 15px; 
+        border-left: 4px solid #EF4444; /* Red danger line */
+        margin-bottom: 15px; 
+        font-family: 'Courier New', Courier, monospace;
+        color: #FECACA;
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+    
+    /* 6. HIDE DEFAULT STREAMLIT ALERT BOXES */
+    div[data-testid="stAlert"] {
+        background-color: transparent;
+        border: 1px solid #334155;
+        border-radius: 0px;
+    }
+    
+    /* 7. LIVE RED BLINKING RECORDING DOT */
+    .live-dot {
+        height: 12px; width: 12px;
+        background-color: red;
+        border-radius: 50%;
+        display: inline-block;
+        animation: blinker 1s linear infinite;
+    }
+    @keyframes blinker { 50% { opacity: 0; } }
     </style>
 """, unsafe_allow_html=True)
 
 st.title("🛡️ IBVAP: Intelligent Video Analytics Platform")
-st.markdown("**Sashastra Seema Bal (SSB) | Border Out Post Command Terminal**")
+# --- DASHBOARD HEADER ---
+st.markdown("""
+    <h1><span class='live-dot'></span> IBVAP// COMMAND TERMINAL</h1>
+    <p style='color: #64748B; font-size: 14px;'>SASHASTRA SEEMA BAL (SSB) | SECURE EDGE-NODE: ALPHA | ENCRYPTION: SHA-256</p>
+""", unsafe_allow_html=True)
 
 # --- CONTROLS ---
 st.sidebar.header("⚙️ Node Settings (Camera-Alpha)")
@@ -37,7 +101,7 @@ enable_frs = st.sidebar.checkbox("3. Edge-Vectorized FRS", value=True)
 enable_blockchain = st.sidebar.checkbox("4. Cryptographic Locker", value=True)
 
 st.sidebar.markdown("---")
-st.sidebar.info("System Status: **ONLINE**\n\nAI Engine: **PyTorch **\n\nNetwork Payload: **Optimized**")
+st.sidebar.info("System Status: **ONLINE**\n\nAI Engine: **PyTorch**\n\nNetwork Payload: **Optimized**")
 
 col1, col2 = st.columns([2, 1])
 
@@ -65,7 +129,7 @@ if not os.path.exists(video_path):
     video_url = "https://github.com/intel-iot-devkit/sample-videos/raw/master/person-bicycle-car-detection.mp4"
     urllib.request.urlretrieve(video_url, video_path)
 
-cap = cv2.VideoCapture(video_path)
+cap = cv2.VideoCapture(0)
 logs = []
 
 
@@ -146,27 +210,38 @@ while cap.isOpened():
     # --- CLOUD-SAFE UI RENDERING ---
     # Convert BGR to RGB and enforce uint8 data type so Streamlit doesn't crash
     
+    # --- UI RENDERING ---
+    # 1. Update Video
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    pil_image = Image.fromarray(frame_rgb)
-    video_placeholder.image(pil_image, use_column_width=True)
+    video_placeholder.image(frame_rgb, channels="RGB", use_container_width=True)
     fps_text.markdown(f"**Network Status:** {current_fps}")
     
+    # 2. Update Vector Text
     if simulated_vector:
         vector_display.markdown(f"<p class='vector-text'>{simulated_vector}</p>", unsafe_allow_html=True)
     else:
         vector_display.empty()
     
+    # 3. Update Custom Threat Box
     if "CRITICAL" in threat_level:
-        threat_status.error(f"🚨 {threat_level}\n\n**Action:** Threat detected. Trajectory engine engaged.")
+        threat_status.markdown(f"<div class='threat-box-critical'><b>[!] {threat_level}</b><br><br>ACTION: Human detected in restricted GEO-Fence. Trajectory engine engaged.</div>", unsafe_allow_html=True)
     else:
-        threat_status.success(f"✅ {threat_level}\n\n**Action:** Area secure.")
+        threat_status.markdown(f"<div class='threat-box'><b>[+] {threat_level}</b><br><br>ACTION: Area secure. Awaiting tripwire trigger.</div>", unsafe_allow_html=True)
         
+    # 4. Update Evidence Locker
     if enable_blockchain and logs:
-        evidence_log.markdown(f"<div class='threat-box'>{ '<br><br>'.join(logs) }</div>", unsafe_allow_html=True)
+        log_text = "<br>".join(logs)
+        evidence_log.markdown(f"<div class='threat-box'>{log_text}</div>", unsafe_allow_html=True)
     elif not enable_blockchain:
-        evidence_log.warning("Blockchain Offline.")
+        evidence_log.markdown("<div class='threat-box' style='border-left-color: #64748B;'>[!] Blockchain Locker Offline.</div>", unsafe_allow_html=True)
         
-    # Crucial for Streamlit Cloud: tiny pause to prevent WebSocket overload
-    time.sleep(0.03) 
+    # 5. Push the Map to screen (if humans exist in frame)
+    try:
+        minimap_placeholder.plotly_chart(fig, use_container_width=True)
+    except:
+        pass # Prevents crashing if the map isn't drawn yet
+        
+    import time
+    time.sleep(0.05) 
 
 cap.release()
