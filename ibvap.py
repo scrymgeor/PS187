@@ -37,7 +37,7 @@ enable_frs = st.sidebar.checkbox("3. Edge-Vectorized FRS", value=True)
 enable_blockchain = st.sidebar.checkbox("4. Cryptographic Locker", value=True)
 
 st.sidebar.markdown("---")
-st.sidebar.info("System Status: **ONLINE**\n\nAI Engine: **PyTorch / TensorRT**\n\nNetwork Payload: **Optimized**")
+st.sidebar.info("System Status: **ONLINE**\n\nAI Engine: **PyTorch **\n\nNetwork Payload: **Optimized**")
 
 col1, col2 = st.columns([2, 1])
 
