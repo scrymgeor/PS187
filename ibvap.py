@@ -19,7 +19,7 @@ def load_model():
 yolo_model = load_model()
 fgbg = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=50, detectShadows=False)
 
-# --- GOVERNMENT-PORTAL STYLE UI CSS ---
+# --- UI CSS ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Roboto+Slab:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
