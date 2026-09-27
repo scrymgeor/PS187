@@ -386,7 +386,7 @@ while cap.isOpened():
 
                 if cls == 0 and enable_frs:
                     cv2.putText(frame, "Person — extracting vector", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (18, 136, 7), 2)
-                    simulated_vector = f"Vector generated (2 KB): `[0.{random.randint(100,999)}, -0.{random.randint(100,999)}, 0.{random.randint(100,999)} ... 512d]`"
+                    simulated_vector = f"Vector generated (2 KB): [0.{random.randint(100,999)}, -0.{random.randint(100,999)}, 0.{random.randint(100,999)} ... 512d]"
                 elif cls in [2, 3, 5, 7]:
                     cv2.putText(frame, "Vehicle — ANPR active", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 153, 51), 2)
 
