@@ -129,7 +129,7 @@ if not os.path.exists(video_path):
     video_url = "https://github.com/intel-iot-devkit/sample-videos/raw/master/person-bicycle-car-detection.mp4"
     urllib.request.urlretrieve(video_url, video_path)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(video_path)
 logs = []
 
 
