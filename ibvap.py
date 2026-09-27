@@ -86,7 +86,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡️ IBVAP: Intelligent Video Analytics Platform")
+st.title("IBVAP: Intelligent Video Analytics Platform")
 # --- DASHBOARD HEADER ---
 st.markdown("""
     <h1><span class='live-dot'></span> IBVAP// COMMAND TERMINAL</h1>
@@ -94,7 +94,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- CONTROLS ---
-st.sidebar.header("⚙️ Node Settings (Camera-Alpha)")
+st.sidebar.header("Node Settings (Camera-Alpha)")
 enable_tripwire = st.sidebar.checkbox("1. Cascaded 'Tripwire' (Save CPU)", value=True)
 enable_nightvision = st.sidebar.checkbox("2. Zero-DCE Night Vision", value=False)
 enable_frs = st.sidebar.checkbox("3. Edge-Vectorized FRS", value=True)
