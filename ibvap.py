@@ -125,7 +125,7 @@ import urllib.request
 video_path = "border_test.mp4"
 if not os.path.exists(video_path):
     st.info("Downloading test video for the first time... please wait 5 seconds.")
-    # This is a reliable, open-source traffic video from Intel's AI library
+    #  reliable, open-source traffic video from Intel's AI library
     video_url = "https://github.com/intel-iot-devkit/sample-videos/raw/master/person-bicycle-car-detection.mp4"
     urllib.request.urlretrieve(video_url, video_path)
 
@@ -203,7 +203,7 @@ while cap.isOpened():
                 frame_bytes = frame.tobytes()
                 crypto_hash = hashlib.sha256(frame_bytes).hexdigest()
                 timestamp = datetime.now().strftime("%H:%M:%S")
-                log_entry = f"**{timestamp}** | Threat Logged\n> **Hash:** `{crypto_hash[:24]}...`"
+                log_entry = f"<b>{timestamp}</b> | Threat Logged <br> <b>Hash:</b> <code style='color: #0EA5E9; background: rgba(0,0,0,0.5); padding: 2px 4px;'>{crypto_hash[:24]}...</code>"
                 if not any(crypto_hash[:24] in log for log in logs):
                     logs.insert(0, log_entry)
 
