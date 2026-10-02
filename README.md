@@ -7,7 +7,7 @@
 
 ### *A Software-Defined, Hardware-Agnostic Edge-Fog Architecture for Legacy CCTV.*
 
-IBVAP is a lightweight, edge-optimized video analytics platform designed for border security perimeters. It retrofits existing "dumb" legacy CCTV cameras with advanced AI, providing real-time threat detection, spatial tracking, and immutable chain-of-custody for digital evidence, all while strictly minimizing network bandwidth and compute overhead.
+IBVAP is a lightweight, edge-optimized video analytics platform designed for border security perimeters. It retrofits legacy CCTV cameras with advanced AI, providing real-time threat detection, spatial tracking, and immutable chain-of-custody for digital evidence, all while strictly minimizing network bandwidth and compute overhead.
 
 ---
 
