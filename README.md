@@ -1,5 +1,5 @@
 # 🛡️ IBVAP: Intelligent Border Video Analytics Platform
-**Team: The W.A.L.L.** | **Smart India Hackathon 2026 **
+**Team: The W.A.L.L.** | **Smart India Hackathon 2026**
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](YOUR-STREAMLIT-APP-URL-HERE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
