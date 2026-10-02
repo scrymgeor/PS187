@@ -3,3 +3,4 @@ streamlit
 ultralytics
 opencv-python-headless
 psutil
+lapx
